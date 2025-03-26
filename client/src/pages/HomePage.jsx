@@ -47,7 +47,7 @@ function HomePage() {
               <div className="product-preview">
                 <img
                   src={product.image}
-                  alt="some product"
+                  alt={product.name}
                   width="250"
                   height="250"
                 />

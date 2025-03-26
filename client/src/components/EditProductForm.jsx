@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -11,11 +11,26 @@ function EditProductForm() {
     price:"",
     description:""
   })
+  // ดึงข้อมูลเก่า
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4001/products/${param.productId}`);
+        setEditProduct(response.data.data); // ตั้งค่า state ด้วยข้อมูลสินค้า
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+    fetchProduct();
+  }, [param.productId]);
   
+  // อัพเดทค่า
   const updateProduct = (e) => {
     const {name,value} = e.target
     setEditProduct({...editProduct, [name]: value})
   }
+
+  // เมื่อกด submit
   const handleUpdate = async(e) => {
     e.preventDefault();
     try {
