@@ -1,6 +1,6 @@
 import axios from "axios"
-import { useState } from "react"
-import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 
 function EditProductForm() {
   const [name, setName] = useState("")
@@ -8,6 +8,26 @@ function EditProductForm() {
   const [price, setPrice] = useState("")
   const [description, setDescription] = useState("")
   const params = useParams()
+  const navigate = useNavigate()
+
+  const getProduct = async () => {
+    try {
+      const result = await axios.get(
+        `http://localhost:4001/products/${params.productId}`
+      )
+      const product = result.data.data
+      setName(product.name)
+      setImage(product.image)
+      setPrice(product.price)
+      setDescription(product.description)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getProduct()
+  }, [])
 
   const editProduct = async () => {
     const inputInfo = {
@@ -28,6 +48,7 @@ function EditProductForm() {
     setImage("")
     setPrice("")
     setDescription("")
+    navigate("/")
   }
 
   const handleSubmit = (e) => {

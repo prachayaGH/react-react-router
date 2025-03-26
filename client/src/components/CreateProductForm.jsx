@@ -1,11 +1,13 @@
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function CreateProductForm() {
   const [name, setName] = useState("")
   const [image, setImage] = useState("")
   const [price, setPrice] = useState("")
   const [description, setDescription] = useState("")
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,6 +30,7 @@ function CreateProductForm() {
     setImage("")
     setPrice("")
     setDescription("")
+    navigate("/")
   }
   return (
     <form className='product-form' onSubmit={handleSubmit}>
