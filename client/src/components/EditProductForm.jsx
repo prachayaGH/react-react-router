@@ -1,6 +1,33 @@
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+
 function EditProductForm() {
+  const navigate = useNavigate()
+  const param = useParams()
+  const [editProduct,setEditProduct] = useState({
+    name:"",
+    image:"",
+    price:"",
+    description:""
+  })
+  
+  const updateProduct = (e) => {
+    const {name,value} = e.target
+    setEditProduct({...editProduct, [name]: value})
+  }
+  const handleUpdate = async(e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:4001/products/${param.productId}`,editProduct)
+      console.log("Product updated:", editProduct);
+      navigate("/")
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  }
   return (
-    <form className="product-form">
+    <form className="product-form" onSubmit={handleUpdate}>
       <h1>Edit Product Form</h1>
       <div className="input-container">
         <label>
@@ -10,7 +37,8 @@ function EditProductForm() {
             name="name"
             type="text"
             placeholder="Enter name here"
-            onChange={() => {}}
+            value={editProduct.name}
+            onChange={updateProduct}
           />
         </label>
       </div>
@@ -22,7 +50,8 @@ function EditProductForm() {
             name="image"
             type="text"
             placeholder="Enter image url here"
-            onChange={() => {}}
+            value={editProduct.image}
+            onChange={updateProduct}
           />
         </label>
       </div>
@@ -34,7 +63,8 @@ function EditProductForm() {
             name="price"
             type="number"
             placeholder="Enter price here"
-            onChange={() => {}}
+            value={editProduct.price}
+            onChange={updateProduct}
           />
         </label>
       </div>
@@ -46,7 +76,8 @@ function EditProductForm() {
             name="description"
             type="text"
             placeholder="Enter description here"
-            onChange={() => {}}
+            value={editProduct.description}
+            onChange={updateProduct}
             rows={4}
             cols={30}
           />
