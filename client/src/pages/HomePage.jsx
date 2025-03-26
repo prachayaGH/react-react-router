@@ -46,7 +46,7 @@ function HomePage() {
             <div className="product" key={product.id}>
               <div className="product-preview">
                 <img
-                  src="https://via.placeholder.com/250/250"
+                  src={product.image}
                   alt="some product"
                   width="250"
                   height="250"
